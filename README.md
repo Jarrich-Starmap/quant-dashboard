@@ -20,6 +20,14 @@
 
 ---
 
+## 系统架构
+
+<a href="https://jarrich-starmap.github.io/quant-dashboard/quant-trader.html" target="_blank"><img src="https://jarrich-starmap.github.io/quant-dashboard/architecture.svg" alt="系统架构"></a>
+
+> 点击图片查看完整设计文档（架构图、参数表与计算公式）。
+
+---
+
 ## 目录结构
 
 ```
@@ -58,14 +66,6 @@ quant-dashboard/
 ```
 
 > 注：各子模块以**顶层包**形式导入（`from data.adapter`、`from db.models`、`from volatility.integration` 等），运行时应将**仓库根目录**置于 `PYTHONPATH`（直接 `python main.py` 即满足）。
-
----
-
-## 系统架构
-
-[![系统架构](https://jarrich-starmap.github.io/quant-dashboard/architecture.svg)](https://jarrich-starmap.github.io/quant-dashboard/quant-trader.html)
-
-> 点击图片查看完整设计文档（架构图、参数表与计算公式）。
 
 ---
 
@@ -158,7 +158,7 @@ EWMA 对各路信号权重做在线学习（方向 ±1、PnL 用 tanh 映射为 
 - `quant-trader.timer`：每分钟触发一次 `main.py`。
 - `quant-dashboard.service`：常驻 `dashboard/server.py`（`uvicorn :8090`），前接 nginx 反代。
 
-数据库使用 SQLite（WAL 模式），并加 `busy_timeout` 应对并发写。详细架构、参数含义与计算公式见 [`docs/quant-trader.html`](docs/quant-trader.html)。
+数据库使用 SQLite（WAL 模式），并加 `busy_timeout` 应对并发写。详细架构、参数含义与计算公式见 <a href="https://jarrich-starmap.github.io/quant-dashboard/quant-trader.html" target="_blank">docs/quant-trader.html</a>。
 
 ---
 

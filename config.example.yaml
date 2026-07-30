@@ -1,0 +1,210 @@
+# 量化交易系统配置文件示例 (config.example.yaml)
+# 用法：复制为 config.yaml 后填写真实值。
+# 敏感字段 webhook_key 推荐用环境变量 WECOM_WEBHOOK_KEY 注入（notify.wecom.webhook_key 留空即可），
+# 代码优先读环境变量，其次读本文件。详见 README.md 的「配置」一节。
+
+mode: simulation
+data_freshness_threshold: 600
+kline_cache_count: 100
+contract_rollover_gap_pct: 0.03
+sentiment:
+  json_path: ./data/predict_future.json
+  max_age_hours: 24
+symbols:
+  AU:
+    contract_multiplier: 1000
+    base_lot: 1
+    entry_threshold: 0.3
+    rsi_period: 14
+    momentum_period: 10
+    technical_weights:
+      rsi: 0.25
+      macd: 0.25
+      bb: 0.25
+      momentum: 0.25
+    base_alpha: 0.5
+    cooldown_periods: 6
+    recovery_position_scale: 0.5
+    max_errors_before_cooldown: 3
+    risk_per_trade: 0.02
+    hard_stop_loss: 0.06
+    breakeven_trigger: 0.02
+    trailing_stop_pct: 0.02
+    commission_mode: fixed
+    commission_fixed: 10.0
+    commission_ratio: 0.0
+    slippage_rate: 0.0002
+    volatility_penalty: 0.5
+    margin_rate: 0.1
+    volatility:
+      enabled: true
+      period: 14
+      state_window: 200
+      volume_confirm_ratio: 1.3
+      reversal_strength: 0.25
+      dynamic_stop: true
+      adjust_reward: true
+  AG:
+    contract_multiplier: 15
+    base_lot: 1
+    entry_threshold: 0.3
+    rsi_period: 14
+    momentum_period: 10
+    technical_weights:
+      rsi: 0.25
+      macd: 0.25
+      bb: 0.25
+      momentum: 0.25
+    base_alpha: 0.5
+    cooldown_periods: 6
+    recovery_position_scale: 0.5
+    max_errors_before_cooldown: 3
+    risk_per_trade: 0.02
+    hard_stop_loss: 0.06
+    breakeven_trigger: 0.02
+    trailing_stop_pct: 0.02
+    commission_mode: ratio
+    commission_fixed: 0.0
+    commission_ratio: 5.0e-05
+    slippage_rate: 0.0003
+    volatility_penalty: 0.5
+    margin_rate: 0.12
+    volatility:
+      enabled: true
+      period: 14
+      state_window: 150
+      volume_confirm_ratio: 1.3
+      reversal_strength: 0.25
+      dynamic_stop: false
+      adjust_reward: false
+  SC:
+    contract_multiplier: 1000
+    base_lot: 1
+    entry_threshold: 0.3
+    rsi_period: 9
+    momentum_period: 5
+    technical_weights:
+      rsi: 0.25
+      macd: 0.25
+      bb: 0.25
+      momentum: 0.25
+    base_alpha: 0.4
+    cooldown_periods: 6
+    recovery_position_scale: 0.5
+    max_errors_before_cooldown: 3
+    risk_per_trade: 0.03
+    hard_stop_loss: 0.06
+    breakeven_trigger: 0.06
+    trailing_stop_pct: 0.03
+    commission_mode: fixed
+    commission_fixed: 20.0
+    commission_ratio: 0.0
+    slippage_rate: 0.0004
+    volatility_penalty: 0.5
+    margin_rate: 0.15
+    volatility:
+      enabled: true
+      period: 10
+      state_window: 120
+      volume_confirm_ratio: 1.5
+      reversal_strength: 0.45
+      dynamic_stop: false
+      adjust_reward: false
+  IC:
+    contract_multiplier: 200
+    base_lot: 1
+    entry_threshold: 0.2
+    rsi_period: 14
+    momentum_period: 10
+    technical_weights:
+      rsi: 0.25
+      macd: 0.25
+      bb: 0.25
+      momentum: 0.25
+    base_alpha: 0.45
+    cooldown_periods: 6
+    recovery_position_scale: 0.5
+    max_errors_before_cooldown: 3
+    risk_per_trade: 0.02
+    hard_stop_loss: 0.06
+    breakeven_trigger: 0.06
+    trailing_stop_pct: 0.02
+    commission_mode: ratio
+    commission_fixed: 0.0
+    commission_ratio: 2.3e-05
+    slippage_rate: 0.0002
+    volatility_penalty: 0.5
+    margin_rate: 0.12
+    volatility:
+      enabled: true
+      period: 10
+      state_window: 120
+      volume_confirm_ratio: 1.5
+      reversal_strength: 0.45
+      dynamic_stop: false
+      adjust_reward: false
+  IM:
+    contract_multiplier: 200
+    base_lot: 1
+    entry_threshold: 0.2
+    rsi_period: 14
+    momentum_period: 10
+    technical_weights:
+      rsi: 0.25
+      macd: 0.25
+      bb: 0.25
+      momentum: 0.25
+    base_alpha: 0.45
+    cooldown_periods: 6
+    recovery_position_scale: 0.5
+    max_errors_before_cooldown: 3
+    risk_per_trade: 0.02
+    hard_stop_loss: 0.06
+    breakeven_trigger: 0.06
+    trailing_stop_pct: 0.02
+    commission_mode: ratio
+    commission_fixed: 0.0
+    commission_ratio: 2.3e-05
+    slippage_rate: 0.0002
+    volatility_penalty: 0.5
+    margin_rate: 0.12
+    volatility:
+      enabled: true
+      period: 10
+      state_window: 120
+      volume_confirm_ratio: 1.5
+      reversal_strength: 0.45
+      dynamic_stop: false
+      adjust_reward: false
+notify:
+  wecom:
+    enabled: true
+    mode: webhook
+    webhook_key: ${WECOM_WEBHOOK_KEY}
+    timeout: 5
+global:
+  adx_period: 14
+  adx_trend_threshold: 25.0
+  adx_range_threshold: 20.0
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  bb_period: 20
+  bb_stddev: 2.0
+  decay_factor: 0.9
+  volatility:
+    trend_fast: 3
+    trend_slow: 10
+    calm_z: -1.0
+    high_z: 1.0
+    extreme_z: 2.0
+    direction_ma_period: 20
+    direction_scale_atr: 2.0
+    expansion_strength: 0.2
+    expansion_vol_boost: 0.1
+    expansion_center: 0.12
+    expansion_steepness: 20.0
+    volume_ma_period: 20
+    reversal_z: 2.0
+    reversal_steepness: 3.0
+    dead_zone: 0.05

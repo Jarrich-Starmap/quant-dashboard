@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>量化交易系统 - 算法与参数文档</title>
+<style>
+:root {
+  --bg: #f8f9fa;
+  --card-bg: #fff;
+  --text: #2c3e50;
+  --sub: #7f8c8d;
+  --border: #e8ecf1;
+  --blue: #2980b9;
+  --green: #27ae60;
+  --red: #e74c3c;
+  --gold: #d4a017;
+  --code-bg: #f4f5f7;
+  --shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 60px 24px 80px; }
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  padding-bottom: 40px;
+  border-bottom: 2px solid var(--border);
+}
+.header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: .02em;
+}
+.header .subtitle {
+  font-size: 14px;
+  color: var(--sub);
+  letter-spacing: .04em;
+}
+.header .badge-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.badge {
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+.badge-arch { background: #e8f4fd; color: var(--blue); }
+.badge-ml { background: #e8f8ed; color: var(--green); }
+.badge-risk { background: #fdeaea; color: var(--red); }
+
+/* Sections */
+.section { margin-bottom: 52px; }
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+  color: var(--text);
+}
+h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 18px 0 8px;
+  color: #555;
+}
+
+/* Architecture Diagram */
+.arch-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.arch-layer {
+  flex: 1;
+  min-width: 120px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 12px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.arch-layer .layer-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+.arch-layer .layer-desc {
+  font-size: 11px;
+  color: var(--sub);
+  line-height: 1.5;
+}
+.arch-arrow {
+  font-size: 20px;
+  color: var(--sub);
+  flex-shrink: 0;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13px;
+  box-shadow: var(--shadow);
+}
+thead th {
+  background: var(--code-bg);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid var(--border);
+}
+tbody td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+tbody tr:hover { background: #f8f9fb; }
+td code, th code { background: var(--code-bg); padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+
+/* Formula */
+.formula {
+  background: var(--code-bg);
+  border-left: 3px solid var(--blue);
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 13px;
+  color: var(--text);
+  border-radius: 0 4px 4px 0;
+  overflow-x: auto;
+}
+.formula.gold { border-left-color: var(--gold); }
+.formula.green { border-left-color: var(--green); }
+
+/* Cards */
+.param-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: var(--shadow);
+}
+.param-card h4 {
+  margin-top: 0;
+  color: var(--blue);
+  font-size: 15px;
+}
+
+/* Symbol Grid */
+.symbol-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.symbol-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+.symbol-card h4 { margin-top: 0; font-size: 15px; }
+.symbol-card .param { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; }
+.symbol-card .param .key { color: var(--sub); }
+.symbol-card .param .val { font-weight: 500; }
+
+.note {
+  background: #fffdf0;
+  border: 1px solid #f0e6c0;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13px;
+  color: #8a7a30;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { padding: 40px 16px 60px; }
+  .header h1 { font-size: 24px; }
+  .section-title { font-size: 18px; }
+  .arch-diagram { flex-direction: column; }
+  .arch-arrow { rotate: 90deg; }
+}
+
+/* Smooth scroll & highlight on anchor */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>量化交易系统</h1>
+  <p class="subtitle">多品种期货 · 自适应信号融合 · EWMA 动态优化 · 波动率感知</p>
+  <div class="badge-row">
+    <span class="badge badge-arch">四层架构</span>
+    <span class="badge badge-ml">在线学习</span>
+    <span class="badge badge-risk">动态风险管理</span>
+    <span class="badge badge-vol">波动率感知</span>
+  </div>
+</div>
+
+<!-- ===== 1. 系统架构 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">1</span>系统架构</div>
+  <p>系统采用<strong>四层流水线架构</strong>，每层独立解耦，Python 实现，SQLite 持久化。</p>
+
+  <div class="arch-diagram">
+    <div class="arch-layer">
+      <div class="layer-name">Data Layer</div>
+      <div class="layer-desc">AkShare 数据源<br>OHLCV 适配<br>数据新鲜度检查<br>K线缓存管理</div>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-layer">
+      <div class="layer-name">Signal Layer</div>
+      <div class="layer-desc">4 指标计算<br>情绪分析融合<br>&alpha;/波动率 三路融合<br>方向 + 得分输出</div>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-layer">
+      <div class="layer-name">Execution Layer</div>
+      <div class="layer-desc">仓位动态计算<br>冷却期控制<br>止损/止盈<br>换月检测</div>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-layer">
+      <div class="layer-name">Feedback Layer</div>
+      <div class="layer-desc">EWMA 滑动窗口<br>盈亏映射<br>胜率评估<br>&alpha; 在线调优</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px">详细架构图</h3>
+  <div style="overflow-x:auto;border:1px solid var(--border);border-radius:8px;">
+  <svg viewBox="0 0 900 575" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+    <defs>
+      <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#2980b9"/></marker>
+      <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#27ae60"/></marker>
+      <marker id="as" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#7f8c8d"/></marker>
+      <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#e74c3c"/></marker>
+      <marker id="agold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#d4a017"/></marker>
+    </defs>
+    <rect width="900" height="575" fill="#f8f9fa" rx="8"/>
+
+    <!-- External Data Sources -->
+    <text x="350" y="18" text-anchor="middle" font-size="11" fill="#7f8c8d" font-weight="600" letter-spacing="2">EXTERNAL DATA</text>
+    <rect x="100" y="28" width="250" height="42" rx="6" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="225" y="46" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">AkShare &middot; Sina 分钟K线</text>
+    <text x="225" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">AU 沪金 / AG 沪银 / SC 原油</text>
+    <rect x="400" y="28" width="250" height="42" rx="6" fill="#e8f8ed" stroke="#27ae60" stroke-width="1.5"/>
+    <text x="525" y="46" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">Sentiment JSON</text>
+    <text x="525" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">多空情绪 &middot; &gt;2h 过期冻结</text>
+    <line x1="225" y1="70" x2="225" y2="90" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+    <line x1="525" y1="70" x2="525" y2="90" stroke="#27ae60" stroke-width="1.5" marker-end="url(#ag)"/>
+
+    <!-- Data Layer -->
+    <rect x="40" y="90" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+    <path d="M48 90 L652 90 Q660 90 660 98 L660 106 L40 106 L40 98 Q40 90 48 90 Z" fill="#2980b9"/>
+    <text x="55" y="102" font-size="10" fill="#fff" font-weight="600">DATA LAYER</text>
+    <rect x="60" y="116" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="195" y="133" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">fetcher.py</text>
+    <text x="195" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">新鲜度检查 &middot; K线缓存 &middot; 换月检测</text>
+    <rect x="370" y="116" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="505" y="133" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">adapter.py</text>
+    <text x="505" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">中文列名&rarr;OHLCV &middot; 主力合约解析</text>
+    <line x1="330" y1="137" x2="370" y2="137" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+    <line x1="350" y1="166" x2="350" y2="188" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+
+    <!-- Signal Layer -->
+    <rect x="40" y="188" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+    <path d="M48 188 L652 188 Q660 188 660 196 L660 204 L40 204 L40 196 Q40 188 48 188 Z" fill="#2980b9"/>
+    <text x="55" y="200" font-size="10" fill="#fff" font-weight="600">SIGNAL LAYER</text>
+    <rect x="60" y="214" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="195" y="231" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">indicators.py</text>
+    <text x="195" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">RSI(ADX调制) &middot; MACD &middot; BB &middot; MOM</text>
+    <rect x="370" y="214" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="505" y="231" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">scorer.py</text>
+    <text x="505" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">softmax加权 &middot; &alpha;融合 &middot; 方向判定</text>
+    <line x1="330" y1="235" x2="370" y2="235" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+    <line x1="350" y1="264" x2="350" y2="286" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+
+    <!-- Execution Layer -->
+    <rect x="40" y="286" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+    <path d="M48 286 L652 286 Q660 286 660 294 L660 302 L40 302 L40 294 Q40 286 48 286 Z" fill="#2980b9"/>
+    <text x="55" y="298" font-size="10" fill="#fff" font-weight="600">EXECUTION LAYER</text>
+    <rect x="60" y="312" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="195" y="329" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">position.py</text>
+    <text x="195" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">仓位计算 &middot; 冷却控制 &middot; 信号阈值</text>
+    <rect x="370" y="312" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="505" y="329" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">trader.py</text>
+    <text x="505" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">模拟交易 &middot; 滑点 &middot; 三级止损</text>
+    <line x1="330" y1="333" x2="370" y2="333" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+    <line x1="350" y1="362" x2="350" y2="384" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+
+    <!-- Feedback Layer -->
+    <rect x="40" y="384" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+    <path d="M48 384 L652 384 Q660 384 660 392 L660 400 L40 400 L40 392 Q40 384 48 384 Z" fill="#27ae60"/>
+    <text x="55" y="396" font-size="10" fill="#fff" font-weight="600">FEEDBACK LAYER</text>
+    <rect x="60" y="410" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="195" y="427" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">ewma_tracker.py</text>
+    <text x="195" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">EWMA追踪 &middot; 指标/技术/情绪/波动率独立</text>
+    <rect x="370" y="410" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="505" y="427" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">optimizer.py</text>
+    <text x="505" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">冷却管理 &middot; reward &middot; 仓位乘数</text>
+    <line x1="330" y1="431" x2="370" y2="431" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+
+    <!-- SQLite Database -->
+    <rect x="690" y="90" width="170" height="370" rx="8" fill="#fff" stroke="#d4a017" stroke-width="1.5"/>
+    <path d="M698 90 L852 90 Q860 90 860 98 L860 110 L690 110 L690 98 Q690 90 698 90 Z" fill="#d4a017"/>
+    <text x="775" y="105" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">SQLite WAL</text>
+    <text x="775" y="130" text-anchor="middle" font-size="9" fill="#7f8c8d" font-weight="600">TABLES</text>
+    <rect x="710" y="138" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+    <text x="775" y="153" text-anchor="middle" font-size="10" fill="#8a7a30">trades</text>
+    <rect x="710" y="166" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+    <text x="775" y="181" text-anchor="middle" font-size="10" fill="#8a7a30">signal_snapshots</text>
+    <rect x="710" y="194" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+    <text x="775" y="209" text-anchor="middle" font-size="10" fill="#8a7a30">ewma_state</text>
+    <rect x="710" y="222" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+    <text x="775" y="237" text-anchor="middle" font-size="10" fill="#8a7a30">kline_cache</text>
+    <text x="775" y="268" text-anchor="middle" font-size="9" fill="#7f8c8d">线程安全</text>
+    <text x="775" y="282" text-anchor="middle" font-size="9" fill="#7f8c8d">持久化存储</text>
+    <text x="775" y="296" text-anchor="middle" font-size="9" fill="#7f8c8d">WAL 模式</text>
+
+    <!-- DB connections (dashed) -->
+    <line x1="660" y1="137" x2="690" y2="149" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="660" y1="235" x2="690" y2="205" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="660" y1="333" x2="690" y2="333" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="660" y1="431" x2="690" y2="378" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+
+    <!-- Feedback Loop -->
+    <path d="M 350 460 Q 350 505 200 505 Q 18 505 18 300 Q 18 226 40 226" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ar)"/>
+    <rect x="95" y="494" width="250" height="22" rx="4" fill="#fdeaea" stroke="#e74c3c" stroke-width="1"/>
+    <text x="220" y="509" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="600">反馈环路：&alpha; · softmax · 波动率 权重在线更新</text>
+    <rect x="400" y="494" width="180" height="22" rx="4" fill="#f4f5f7" stroke="#e8ecf1"/>
+    <text x="490" y="509" text-anchor="middle" font-size="10" fill="#7f8c8d">config.yaml &middot; 五品种独立参数</text>
+    <rect x="600" y="494" width="110" height="22" rx="4" fill="#e8f4fd" stroke="#2980b9" stroke-width="1"/>
+    <text x="655" y="509" text-anchor="middle" font-size="10" fill="#2980b9" font-weight="600">main.py 主控</text>
+
+    <!-- Legend -->
+    <rect x="40" y="532" width="820" height="30" rx="6" fill="#fff" stroke="#e8ecf1"/>
+    <line x1="60" y1="547" x2="90" y2="547" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+    <text x="98" y="551" font-size="10" fill="#7f8c8d">数据流</text>
+    <line x1="160" y1="547" x2="190" y2="547" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="198" y="551" font-size="10" fill="#7f8c8d">DB 读写</text>
+    <line x1="260" y1="547" x2="290" y2="547" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ar)"/>
+    <text x="298" y="551" font-size="10" fill="#7f8c8d">反馈环路（下一周期生效）</text>
+    <rect x="490" y="542" width="12" height="10" rx="2" fill="#2980b9"/>
+    <text x="510" y="551" font-size="10" fill="#7f8c8d">数据/信号/执行层</text>
+    <rect x="620" y="542" width="12" height="10" rx="2" fill="#27ae60"/>
+    <text x="640" y="551" font-size="10" fill="#7f8c8d">反馈层</text>
+    <rect x="700" y="542" width="12" height="10" rx="2" fill="#d4a017"/>
+    <text x="720" y="551" font-size="10" fill="#7f8c8d">SQLite</text>
+  </svg>
+  </div>
+
+  <h3 style="margin-top:28px">部署架构</h3>
+  <div style="overflow-x:auto;border:1px solid var(--border);border-radius:8px;">
+  <svg viewBox="0 0 900 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+    <defs>
+      <marker id="d2s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#7f8c8d"/></marker>
+      <marker id="d2g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#27ae60"/></marker>
+      <marker id="d2gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#d4a017"/></marker>
+    </defs>
+    <rect width="900" height="175" fill="#f8f9fa" rx="8"/>
+
+    <!-- Row 1: Trading Engine -->
+    <text x="20" y="20" font-size="10" fill="#7f8c8d" font-weight="600" letter-spacing="1">交易引擎</text>
+    <rect x="40" y="28" width="160" height="46" rx="6" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="120" y="47" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">systemd timer</text>
+    <text x="120" y="62" text-anchor="middle" font-size="10" fill="#7f8c8d">每 60s 触发 oneshot</text>
+    <line x1="200" y1="51" x2="238" y2="51" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#d2s)"/>
+    <rect x="240" y="28" width="200" height="46" rx="6" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+    <text x="340" y="47" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">main.py</text>
+    <text x="340" y="62" text-anchor="middle" font-size="10" fill="#7f8c8d">ThreadPoolExecutor &times;3 品种</text>
+    <line x1="440" y1="51" x2="478" y2="51" stroke="#d4a017" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#d2gold)"/>
+    <rect x="480" y="28" width="200" height="46" rx="6" fill="#fdf6e3" stroke="#d4a017" stroke-width="1.5"/>
+    <text x="580" y="47" text-anchor="middle" font-size="12" fill="#8a7a30" font-weight="600">SQLite (quant_trader.db)</text>
+    <text x="580" y="62" text-anchor="middle" font-size="10" fill="#7f8c8d">WAL &middot; 线程安全</text>
+    <rect x="700" y="28" width="160" height="46" rx="6" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="780" y="47" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">AkShare API</text>
+    <text x="780" y="62" text-anchor="middle" font-size="10" fill="#7f8c8d">Sina 分钟K线数据源</text>
+    <path d="M 340 28 Q 340 12 560 12 Q 780 12 780 28" fill="none" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+    <!-- Row 2: Dashboard -->
+    <text x="20" y="95" font-size="10" fill="#7f8c8d" font-weight="600" letter-spacing="1">监控面板</text>
+    <rect x="40" y="103" width="200" height="46" rx="6" fill="#e8f8ed" stroke="#27ae60" stroke-width="1.5"/>
+    <text x="140" y="122" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">FastAPI :8090</text>
+    <text x="140" y="137" text-anchor="middle" font-size="10" fill="#7f8c8d">dashboard/server.py</text>
+    <line x1="240" y1="126" x2="278" y2="126" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#d2s)"/>
+    <rect x="280" y="103" width="200" height="46" rx="6" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+    <text x="380" y="122" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">nginx (SSL)</text>
+    <text x="380" y="137" text-anchor="middle" font-size="10" fill="#7f8c8d">反向代理 &middot; 静态文件</text>
+    <line x1="480" y1="126" x2="518" y2="126" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#d2s)"/>
+    <rect x="520" y="103" width="200" height="46" rx="6" fill="#f4f5f7" stroke="#e8ecf1" stroke-width="1.5"/>
+    <text x="620" y="122" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">Browser</text>
+    <text x="620" y="137" text-anchor="middle" font-size="10" fill="#7f8c8d">Chart.js &middot; 实时图表</text>
+    <!-- FastAPI reads SQLite -->
+    <path d="M 580 74 Q 580 88 140 88 Q 140 95 140 103" fill="none" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#d2gold)"/>
+    <text x="360" y="84" font-size="9" fill="#d4a017">读取交易数据</text>
+  </svg>
+  </div>
+
+  <div class="note">
+    运行周期：每分钟整点由 systemd timer 触发 <code>main.py</code>，从数据拉取到执行风控完整闭环。Dashboard 由 FastAPI 常驻 :8090 端口，nginx 负责 SSL 终止和静态文件服务。
+  </div>
+
+  <div class="note">
+    <strong>波动率感知模块（方案 B'）</strong>：在既有「技术 + 情绪」二路融合之外，新增<strong>波动率作为第三路信号源</strong>。它由 <code>config.yaml</code> 各品种的 <code>volatility.enabled</code> 开关<strong>配置门控</strong> —— 关闭或市场平静（<code>vol_score &asymp; 0</code>）时，系统行为与旧版<strong>逐位一致</strong>，绝不覆盖既有功能。所有集成点采用连续 sigmoid 映射，消除阈值跳变（cliff-effect）。
+  </div>
+</div>
+
+<!-- ===== 2. 品种与参数配置 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">2</span>品种与参数</div>
+  <p>五品种独立配置，互不干扰。SC 原油因波动率更高采用差异化参数；IC/IM 为股指期货，采用差异化融合与风控参数。</p>
+
+  <div class="symbol-grid">
+    <div class="symbol-card">
+      <h4>AU 黄金 <span style="color:var(--gold);font-weight:400">沪金主力</span></h4>
+      <div class="param"><span class="key">RSI 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 趋势/震荡</span><span class="val">25 / 20</span></div>
+      <div class="param"><span class="key">MACD</span><span class="val">12 / 26 / 9</span></div>
+      <div class="param"><span class="key">布林带</span><span class="val">20 / 2&sigma;</span></div>
+      <div class="param"><span class="key">动量周期</span><span class="val">10</span></div>
+      <div class="param"><span class="key">EWMA 衰减 &alpha;</span><span class="val">0.9（半衰期 ~6.5h）</span></div>
+      <div class="param"><span class="key">初始融合 &alpha;</span><span class="val">0.5</span></div>
+      <div class="param"><span class="key">风险比例</span><span class="val">2% / 笔</span></div>
+      <div class="param"><span class="key">基础仓位</span><span class="val">1 手</span></div>
+      <div class="param"><span class="key">冷却阈值</span><span class="val">连续 3 错 &rarr; 6 周期</span></div>
+      <div class="param"><span class="key">手续费</span><span class="val">固定 10 元/手</span></div>
+      <div class="param"><span class="key">滑点</span><span class="val">0.02%</span></div>
+      <div class="param"><span class="key">保证金率</span><span class="val">10%</span></div>
+      <div class="param"><span class="key">硬止损</span><span class="val">6% 亏损</span></div>
+      <div class="param"><span class="key">保本触发</span><span class="val">浮盈 2%</span></div>
+      <div class="param"><span class="key">移动止损</span><span class="val">峰值回撤 2%</span></div>
+    </div>
+    <div class="symbol-card">
+      <h4>AG 白银 <span style="color:var(--sub);font-weight:400">沪银主力</span></h4>
+      <div class="param"><span class="key">RSI 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 趋势/震荡</span><span class="val">25 / 20</span></div>
+      <div class="param"><span class="key">MACD</span><span class="val">12 / 26 / 9</span></div>
+      <div class="param"><span class="key">布林带</span><span class="val">20 / 2&sigma;</span></div>
+      <div class="param"><span class="key">动量周期</span><span class="val">10</span></div>
+      <div class="param"><span class="key">EWMA 衰减 &alpha;</span><span class="val">0.9（半衰期 ~6.5h）</span></div>
+      <div class="param"><span class="key">初始融合 &alpha;</span><span class="val">0.5</span></div>
+      <div class="param"><span class="key">风险比例</span><span class="val">2% / 笔</span></div>
+      <div class="param"><span class="key">基础仓位</span><span class="val">1 手</span></div>
+      <div class="param"><span class="key">冷却阈值</span><span class="val">连续 3 错 &rarr; 6 周期</span></div>
+      <div class="param"><span class="key">手续费</span><span class="val">万分之 0.5</span></div>
+      <div class="param"><span class="key">滑点</span><span class="val">0.03%</span></div>
+      <div class="param"><span class="key">保证金率</span><span class="val">12%</span></div>
+      <div class="param"><span class="key">硬止损</span><span class="val">6% 亏损</span></div>
+      <div class="param"><span class="key">保本触发</span><span class="val">浮盈 2%</span></div>
+      <div class="param"><span class="key">移动止损</span><span class="val">峰值回撤 2%</span></div>
+    </div>
+    <div class="symbol-card">
+      <h4>SC 原油 <span style="color:var(--red);font-weight:400">INE原油主力</span></h4>
+      <div class="param"><span class="key">RSI 周期</span><span class="val">9（更灵敏）</span></div>
+      <div class="param"><span class="key">ADX 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 趋势/震荡</span><span class="val">25 / 20</span></div>
+      <div class="param"><span class="key">MACD</span><span class="val">12 / 26 / 9</span></div>
+      <div class="param"><span class="key">布林带</span><span class="val">20 / 2&sigma;</span></div>
+      <div class="param"><span class="key">动量周期</span><span class="val">5（更灵敏）</span></div>
+      <div class="param"><span class="key">EWMA 衰减 &alpha;</span><span class="val">0.9（半衰期 ~6.5h）</span></div>
+      <div class="param"><span class="key">初始融合 &alpha;</span><span class="val">0.4（偏技术）</span></div>
+      <div class="param"><span class="key">风险比例</span><span class="val">3% / 笔</span></div>
+      <div class="param"><span class="key">基础仓位</span><span class="val">1 手</span></div>
+      <div class="param"><span class="key">冷却阈值</span><span class="val">连续 3 错 &rarr; 6 周期</span></div>
+      <div class="param"><span class="key">手续费</span><span class="val">固定 20 元/手</span></div>
+      <div class="param"><span class="key">滑点</span><span class="val">0.04%</span></div>
+      <div class="param"><span class="key">保证金率</span><span class="val">15%</span></div>
+      <div class="param"><span class="key">硬止损</span><span class="val">6% 亏损</span></div>
+      <div class="param"><span class="key">保本触发</span><span class="val">浮盈 6%</span></div>
+      <div class="param"><span class="key">移动止损</span><span class="val">峰值回撤 3%</span></div>
+    </div>
+    <div class="symbol-card">
+      <h4>IC 中证500 <span style="color:var(--blue);font-weight:400">股指主力</span></h4>
+      <div class="param"><span class="key">RSI 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 趋势/震荡</span><span class="val">25 / 20</span></div>
+      <div class="param"><span class="key">MACD</span><span class="val">12 / 26 / 9</span></div>
+      <div class="param"><span class="key">布林带</span><span class="val">20 / 2&sigma;</span></div>
+      <div class="param"><span class="key">动量周期</span><span class="val">10</span></div>
+      <div class="param"><span class="key">EWMA 衰减 &alpha;</span><span class="val">0.9（半衰期 ~6.5h）</span></div>
+      <div class="param"><span class="key">初始融合 &alpha;</span><span class="val">0.45</span></div>
+      <div class="param"><span class="key">风险比例</span><span class="val">2% / 笔</span></div>
+      <div class="param"><span class="key">基础仓位</span><span class="val">1 手</span></div>
+      <div class="param"><span class="key">冷却阈值</span><span class="val">连续 3 错 &rarr; 6 周期</span></div>
+      <div class="param"><span class="key">手续费</span><span class="val">比例 万分之 0.23</span></div>
+      <div class="param"><span class="key">滑点</span><span class="val">0.02%</span></div>
+      <div class="param"><span class="key">保证金率</span><span class="val">12%</span></div>
+      <div class="param"><span class="key">硬止损</span><span class="val">6% 亏损</span></div>
+      <div class="param"><span class="key">保本触发</span><span class="val">浮盈 6%</span></div>
+      <div class="param"><span class="key">移动止损</span><span class="val">峰值回撤 2%</span></div>
+    </div>
+    <div class="symbol-card">
+      <h4>IM 中证1000 <span style="color:#16a085;font-weight:400">股指主力</span></h4>
+      <div class="param"><span class="key">RSI 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 周期</span><span class="val">14</span></div>
+      <div class="param"><span class="key">ADX 趋势/震荡</span><span class="val">25 / 20</span></div>
+      <div class="param"><span class="key">MACD</span><span class="val">12 / 26 / 9</span></div>
+      <div class="param"><span class="key">布林带</span><span class="val">20 / 2&sigma;</span></div>
+      <div class="param"><span class="key">动量周期</span><span class="val">10</span></div>
+      <div class="param"><span class="key">EWMA 衰减 &alpha;</span><span class="val">0.9（半衰期 ~6.5h）</span></div>
+      <div class="param"><span class="key">初始融合 &alpha;</span><span class="val">0.45</span></div>
+      <div class="param"><span class="key">风险比例</span><span class="val">2% / 笔</span></div>
+      <div class="param"><span class="key">基础仓位</span><span class="val">1 手</span></div>
+      <div class="param"><span class="key">冷却阈值</span><span class="val">连续 3 错 &rarr; 6 周期</span></div>
+      <div class="param"><span class="key">手续费</span><span class="val">比例 万分之 0.23</span></div>
+      <div class="param"><span class="key">滑点</span><span class="val">0.02%</span></div>
+      <div class="param"><span class="key">保证金率</span><span class="val">12%</span></div>
+      <div class="param"><span class="key">硬止损</span><span class="val">6% 亏损</span></div>
+      <div class="param"><span class="key">保本触发</span><span class="val">浮盈 6%</span></div>
+      <div class="param"><span class="key">移动止损</span><span class="val">峰值回撤 2%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. 技术指标算法 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">3</span>技术指标算法</div>
+  <p>每个指标输出值域为 <code>[-1, 1]</code>，正值偏多、负值偏空、零附近为中性。初始等权 <code>0.25</code>，后续由 EWMA 动态调节。</p>
+
+  <!-- RSI -->
+  <h3>3.1 RSI — 相对强弱指数（ADX 自适应映射）</h3>
+  <p>RSI 信号阈值由 <strong>ADX 趋势强度</strong>动态调制，区分趋势市与震荡市：</p>
+  <table>
+    <thead><tr><th>市场状态</th><th>ADX</th><th>超买阈值</th><th>超卖阈值</th><th>过渡区</th></tr></thead>
+    <tbody>
+      <tr><td>强趋势</td><td>&ge; 25</td><td>80</td><td>20</td><td>70~80 / 20~30</td></tr>
+      <tr><td>过渡</td><td>20 ~ 25</td><td>70→80</td><td>30→20</td><td>线性插值</td></tr>
+      <tr><td>震荡</td><td>&le; 20</td><td>70</td><td>30</td><td>60~70 / 30~40</td></tr>
+    </tbody>
+  </table>
+  <div class="formula">
+    t = clamp((ADX &minus; 20) / 5, 0, 1)<br>
+    OB<sub>thresh</sub> = 70 + 10t &nbsp;|&nbsp; OB<sub>trans</sub> = 60 + 10t<br>
+    OS<sub>thresh</sub> = 30 &minus; 10t &nbsp;|&nbsp; OS<sub>trans</sub> = 40 &minus; 10t<br><br>
+    signal<sub>RSI</sub> = &minus;1 (RSI &ge; OB<sub>thresh</sub>) &nbsp;|&nbsp; +1 (RSI &le; OS<sub>thresh</sub>)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 线性映射 (过渡区内) &nbsp;|&nbsp; 0 (中性区)
+  </div>
+  <p class="note">强趋势市场中 RSI 可长期维持 60-80，固定 70/30 阈值会导致过早反向做空。ADX &ge; 25 时阈值放宽至 80/20，仅在真正极端时发信号；震荡市保持灵敏。ADX 不参与 softmax 加权，仅作为 RSI 的调制器。</p>
+
+  <!-- MACD -->
+  <h3>3.2 MACD — 异同移动平均线</h3>
+  <p>基础信号为 <strong>离散动量确认</strong>：比较当前 hist 与前一根 hist 的变化趋势：</p>
+  <div class="formula green">
+    raw = +1 (hist &gt; 0 且递增) &nbsp;|&nbsp; &minus;1 (hist &lt; 0 且递减) &nbsp;|&nbsp; 0 (其他)<br>
+    factor = clamp(0.7 + 0.3 &times; sign(MACD_Line) &times; raw, 0.4, 1.0)<br>
+    signal<sub>MACD</sub> = raw &times; factor
+  </div>
+  <p class="note">离散信号 + 动量确认跨品种鲁棒，不受价格量级影响。零轴非对称因子使零轴上方多头信号被加强、空头信号被削弱，零轴下方对称处理。</p>
+
+  <!-- 布林带 -->
+  <h3>3.3 布林带 — Bollinger Bands</h3>
+  <p>基础信号：价格触及上轨 &rarr; 看空，触及下轨 &rarr; 看多。带宽乘数调节：</p>
+  <div class="formula gold">
+    multiplier = clamp(1.0 + 0.3 &times; (1 &minus; min(带宽比, 2)), 0.5, 1.5)<br>
+    signal<sub>BB</sub> = (mid &minus; close) / (upper &minus; lower) &times; multiplier &times; 2
+  </div>
+  <table>
+    <thead><tr><th>带宽状态</th><th>乘数</th><th>物理含义</th></tr></thead>
+    <tbody>
+      <tr><td>带宽比 &rarr; 0（极度收缩）</td><td>1.3</td><td>突破信号加强</td></tr>
+      <tr><td>带宽比 = 1（正常）</td><td>1.0</td><td>标准信号</td></tr>
+      <tr><td>带宽比 &ge; 2（极度扩张）</td><td>0.7</td><td>回归信号加强</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 动量 -->
+  <h3>3.4 动量指标 — Momentum</h3>
+  <div class="formula">
+    raw = (close<sub>t</sub> &minus; close<sub>t&minus;n</sub>) / close<sub>t&minus;n</sub><br>
+    accel = sign(mom<sub>t</sub> &minus; mom<sub>t&minus;1</sub>) <em>（加速方向）</em><br>
+    signal<sub>MOM</sub> = clamp(tanh(raw &times; 50) &times; weight, &minus;1, 1)
+  </div>
+  <table>
+    <thead><tr><th>动量方向</th><th>加速状态</th><th>权重</th></tr></thead>
+    <tbody>
+      <tr><td>正向</td><td>加速</td><td>1.0（满分）</td></tr>
+      <tr><td>正向</td><td>减速</td><td>0.5（折半）</td></tr>
+      <tr><td>负向</td><td>加速</td><td>1.0</td></tr>
+      <tr><td>负向</td><td>减速</td><td>0.5</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ADX -->
+  <h3>3.5 ADX — 趋势强度指标（RSI 调制器）</h3>
+  <p>ADX（Average Directional Index）衡量趋势强度，不指示方向。作为 RSI 的<strong>调制器</strong>，不直接参与 softmax 加权。</p>
+  <div class="formula">
+    TR = max(H&minus;L, |H&minus;C<sub>prev</sub>|, |L&minus;C<sub>prev</sub>|)<br>
+    +DM = (H&minus;H<sub>prev</sub>) if &gt; (L<sub>prev</sub>&minus;L) and &gt; 0, else 0<br>
+    &minus;DM = (L<sub>prev</sub>&minus;L) if &gt; (H&minus;H<sub>prev</sub>) and &gt; 0, else 0<br>
+    +DI = 100 &times; WilderSmooth(+DM) / WilderSmooth(TR)<br>
+    &minus;DI = 100 &times; WilderSmooth(&minus;DM) / WilderSmooth(TR)<br>
+    DX = 100 &times; |+DI &minus; &minus;DI| / (+DI + &minus;DI)<br>
+    ADX = WilderSmooth(DX)
+  </div>
+  <table>
+    <thead><tr><th>ADX 值</th><th>市场状态</th><th>RSI 阈值</th><th>设计意图</th></tr></thead>
+    <tbody>
+      <tr><td>&ge; 25</td><td>强趋势</td><td>80/20</td><td>避免趋势中过早反转</td></tr>
+      <tr><td>20 ~ 25</td><td>过渡</td><td>插值</td><td>平滑切换，无跳变</td></tr>
+      <tr><td>&le; 20</td><td>震荡</td><td>70/30</td><td>保持均值回归灵敏</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Wilder 平滑使用 EWM(&alpha;=1/period)，与 RSI 的指数加权一致。ADX 值存入 signal_snapshots 供 Dashboard 展示。</p>
+</div>
+
+  <!-- 3.6 波动率估计器 -->
+  <h3>3.6 波动率估计器 — Yang-Zhang (YZ)</h3>
+  <p>方案 B' 只保留 <strong>Yang-Zhang</strong> 单一估计器，弃用 ATR/Parkinson/GK 融合与自适应加权。YZ 是 ATR 信息的严格超集：它同时分离隔夜跳空（open-to-open）与日内区间（close-to-close + Rogers-Satchell），对带夜盘、频繁跳空的期货更稳健。计算复杂度 <code>O(n)</code>，与单次 ATR 相当。</p>
+  <div class="formula">
+    &sigma;²<sub>YZ</sub> = &sigma;²<sub>overnight</sub> + k &middot; &sigma;²<sub>close</sub> + (1 &minus; k) &middot; &sigma;²<sub>RS</sub><br>
+    k = 0.34 / (1.34 + (n + 1) / (n &minus; 1))<br><br>
+    &sigma;²<sub>overnight</sub> = Var( log(open<sub>t</sub> / close<sub>t&minus;1</sub>) )<br>
+    &sigma;²<sub>RS</sub> = mean( log(H/O)&middot;(log(H/O) &minus; log(C/O)) + log(L/O)&middot;(log(L/O) &minus; log(C/O)) )<br>
+    &sigma;²<sub>close</sub> = Var( log(close<sub>t</sub> / close<sub>t&minus;1</sub>) )<br><br>
+    输出：价格分数（无量纲）&sigma;<sub>YZ</sub> = &radic;(&sigma;²<sub>YZ</sub>)
+  </div>
+  <table>
+    <thead><tr><th>组件</th><th>含义</th><th>ATR 是否覆盖</th></tr></thead>
+    <tbody>
+      <tr><td>&sigma;²<sub>overnight</sub></td><td>隔夜跳空方差（夜盘 / 跳空）</td><td>否 — ATR 完全丢失此项</td></tr>
+      <tr><td>&sigma;²<sub>RS</sub></td><td>Rogers-Satchell 日内区间方差（H&minus;L）</td><td>部分（ATR 用 TR 近似）</td></tr>
+      <tr><td>&sigma;²<sub>close</sub></td><td>收盘&minus;收盘方差（含方向信息）</td><td>否 — ATR 不区分方向</td></tr>
+    </tbody>
+  </table>
+  <p>状态评估改用 <strong>z-score</strong>（EWMA 均值 / 标准差），替代原方案的百分位排序：</p>
+  <div class="formula green">
+    yz_mean = EWMA(&sigma;<sub>YZ</sub>, span = state_window)<br>
+    yz_std&nbsp; = EWMA_std(&sigma;<sub>YZ</sub>, span = state_window)<br>
+    z_score = (&sigma;<sub>YZ,t</sub> &minus; yz_mean) / yz_std
+  </div>
+  <p>z-score 与系统既有的 EWMA 衰减体系一致（O(n)），直接衡量<strong>当前波动率相对近期基线的偏离</strong>。扩展速率以快 / 慢 EMA 差值衡量：<code>expansion_rate = (yz_fast &minus; yz_slow) / yz_slow</code>（fast = trend_fast = 3，slow = trend_slow = 10）。状态字符串（CALM / HIGH / EXTREME）仅用于日志与 DB，<strong>下游一律使用连续 z_score，禁止用状态做 if-elif 分支</strong>。</p>
+  <p class="note"><strong>ATR 保留为工具量</strong>：止损层需要价格单位的绝对距离（如「18.5 点」），而 YZ 输出无量纲分数。ATR 仅用于提供价格单位，不进入估计器或融合权重。温启动保护：EWMA 未收敛时 <code>z_score</code> 填 0（中性），避免 NaN / 极端值。各品种参数如下：</p>
+  <table>
+    <thead><tr><th>品种</th><th>period</th><th>state_window</th><th>volume_confirm_ratio</th><th>reversal_strength</th><th>dynamic_stop</th><th>adjust_reward</th></tr></thead>
+    <tbody>
+      <tr><td>AU</td><td>14</td><td>200</td><td>1.3</td><td>0.25</td><td>false</td><td>false</td></tr>
+      <tr><td>AG</td><td>14</td><td>150</td><td>1.3</td><td>0.25</td><td>false</td><td>false</td></tr>
+      <tr><td>SC</td><td>10</td><td>120</td><td>1.5</td><td>0.45</td><td>false</td><td>false</td></tr>
+      <tr><td>IC</td><td>10</td><td>120</td><td>1.5</td><td>0.45</td><td>false</td><td>false</td></tr>
+      <tr><td>IM</td><td>10</td><td>120</td><td>1.5</td><td>0.45</td><td>false</td><td>false</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 3.7 波动率方向信号 -->
+  <h3>3.7 波动率方向信号 — Expansion / Reversal</h3>
+  <p>波动率作为<strong>第三路信号源</strong>，输出 <code>vol_score &isin; [&minus;1, 1]</code>（理论值域；实际幅度受强度系数限制：AU/AG 上限 ≈ 0.30、SC/IC/IM 上限 ≈ 0.45，多数时段数值较小）。方案 B' 仅保留两种模式（删去 Squeeze —— BB 带宽已覆盖「压缩 &rarr; 突破」逻辑，AVI 不重复）：</p>
+  <table>
+    <thead><tr><th>模式</th><th>触发</th><th>方向</th><th>基础置信度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Expansion follow</strong><br>扩张跟随</td><td>expansion_rate 超阈值（连续 sigmoid）</td><td>跟随价格趋势</td><td>0.20 + 量能加成（最多 +0.10）</td></tr>
+      <tr><td><strong>Extreme reversal</strong><br>极端反转</td><td>z_score &gt; reversal_z（默认 2.0）</td><td>与价格趋势反向（fade）</td><td>0.25（AU/AG）/ 0.45（SC）</td></tr>
+      <tr><td><strong>Normal</strong><br>常态</td><td>其余情况</td><td>无明确观点</td><td>&asymp; 0（让位给 tech / sent）</td></tr>
+    </tbody>
+  </table>
+  <ul style="font-size:13px; margin:8px 0 8px 20px; color:var(--text);">
+    <li style="margin:4px 0;"><strong>扩张跟随</strong>：波动率快速扩张通常意味着动能正在积聚，方向取价格趋势（价格相对 EMA 的 tanh，按 ATR 缩放）。成交量确认（volume_confirm_ratio，AU/AG=1.3、SC=1.5）可额外提升置信度约 0.10。</li>
+    <li style="margin:4px 0;"><strong>极端反转</strong>：波动率处于极端高位往往是恐慌 / 冲顶，价格更可能均值回归，方向与价格趋势相反。</li>
+    <li style="margin:4px 0;">两种模式可重叠并平滑混合，全部用连续 sigmoid 过渡，<strong>无 if-elif 悬崖</strong>。死区 <code>dead_zone = 0.05</code> 过滤极小信号。</li>
+  </ul>
+  <p class="note">为何删 Squeeze：BB 带宽比已做「低波动 &rarr; 突破信号增强」，AVI 再做 Squeeze 是信号重叠而非信息增益。Reversal 才是 AVI 的独特 alpha —— BB 说「波动低」，AVI 说「波动极端 &rarr; 反转」，二者互补。</p>
+
+<!-- ===== 4. 信号融合与 α 动态权重 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">4</span>信号融合机制</div>
+
+  <h3>4.1 技术得分合成</h3>
+  <p>四个技术指标通过 <strong>softmax(min-shift, &tau;=0.5)</strong> 动态加权：</p>
+  <div class="formula">
+    shifted<sub>i</sub> = ewma<sub>i</sub> &minus; min(ewma) + &epsilon;<br>
+    w<sub>i</sub> = softmax(shifted, temperature=0.5)<br>
+    tech_score = &Sigma; w<sub>i</sub> &times; signal<sub>i</sub> &nbsp;&nbsp;&isin; [&minus;1, 1]
+  </div>
+  <p class="note">min-shift 保证所有输入非负，temperature=0.5 使权重分化更明显（优于标准 softmax），加速向优指标滑移。初始 EWMA 全为零时，shifted 全等，softmax 自动退化为均匀 0.25 权重，无需手动冷启动。</p>
+
+  <h3>4.2 情绪得分</h3>
+  <div class="formula">
+    sentiment_score = (bullish &minus; bearish) / (bullish + bearish) &nbsp;&nbsp;&isin; [&minus;1, 1]
+  </div>
+  <p>从本地 JSON 文件读取各品种的多空情绪计数。情绪数据超过 <strong>4 小时</strong>视为过期：<code>sentiment_score = 0</code>，<code>ewma_sent</code> 冻结不更新，<code>&alpha; 强制为 1</code>（纯技术驱动）。</p>
+
+  <h3>4.3 &alpha; 动态融合权重（核心算法）</h3>
+  <p>技术得分与情绪得分的融合比例由 <code>&alpha;</code> 在线自动调节：</p>
+  <div class="formula green">
+    &alpha; = sigmoid(ewma_tech &minus; ewma_sent)<br>
+    final_score = &alpha; &times; tech_score + (1 &minus; &alpha;) &times; sentiment_score
+  </div>
+  <table>
+    <thead><tr><th>&alpha; 范围</th><th>含义</th><th>行为</th></tr></thead>
+    <tbody>
+      <tr><td>&alpha; &gt; 0.5</td><td>技术指标 EWMA 胜率更高</td><td>更多依赖技术信号</td></tr>
+      <tr><td>&alpha; &lt; 0.5</td><td>情绪分析 EWMA 胜率更高</td><td>更多依赖情绪信号</td></tr>
+      <tr><td>&alpha; &asymp; 0.5</td><td>两者表现相当</td><td>均衡融合</td></tr>
+    </tbody>
+  </table>
+  <p class="note"><strong>初始值差异</strong>：AU / AG 的 <code>base_alpha = 0.5</code>（均衡起步）；SC 原油因情绪数据可靠性较低，<code>base_alpha = 0.4</code>（初始略偏向情绪侧，待 EWMA 学习后自动滑移）。<code>&alpha;</code> 在线更新时 clamp 至 <code>[0.2, 0.8]</code>，防止任一侧权重极端化。</p>
+  <p><strong>方向判定</strong>：final_score &gt; 0 &rarr; LONG，final_score &lt; 0 &rarr; SHORT，|final_score| &lt; 阈值 &rarr; NEUTRAL（不交易）。</p>
+
+  <h3>4.4 波动率三路融合（波动率开启时）</h3>
+  <p>当波动率模块开启且 <code>|vol_score| &ge; vol_epsilon</code> 时，<code>compute_score</code> 由二路 &alpha; 融合升级为<strong>三路 softmax 融合</strong>：</p>
+  <div class="formula">
+    w = softmax( [ewma_tech, ewma_sent, ewma_vol], &tau; )<br>
+    final_score = w<sub>tech</sub> &times; tech_score + w<sub>sent</sub> &times; sentiment_score + w<sub>vol</sub> &times; vol_score
+  </div>
+  <table>
+    <thead><tr><th>情形</th><th>权重来源</th><th>行为</th></tr></thead>
+    <tbody>
+      <tr><td>波动率关闭</td><td>&alpha; = sigmoid(ewma_tech &minus; ewma_sent)</td><td>与旧版逐位一致（二路 &alpha; 融合）</td></tr>
+      <tr><td>开启但 vol_score &asymp; 0</td><td>&alpha; 二路融合</td><td>与旧版逐位一致（平静市自动让位）</td></tr>
+      <tr><td>开启且 vol_score 活跃</td><td>softmax 三路</td><td>波动率作为第三路信号参与融合</td></tr>
+    </tbody>
+  </table>
+  <p class="note"><strong>配置门控与逐位回退</strong>：所有集成点由 <code>config.yaml</code> 各品种的 <code>volatility.enabled</code> 开关控制。<code>vol_score &asymp; 0</code>（平静市）时 <code>compute_score</code> 直接走原始 &alpha; 路径，输出与关闭波动率<strong>逐位相同</strong> —— 即便开启模块也不会覆盖既有行为。EWMA 更新独立于 <code>fuse()</code>，投影法 clip 修复了早前的循环 bug。</p>
+</div>
+
+<!-- ===== 5. 仓位管理 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">5</span>仓位管理</div>
+  <div class="formula">
+    position_size = base_lot &times; |final_score| &times; risk_multiplier
+  </div>
+  <p>仓位与信号强度成正比例关系。信号越强、方向越确定，仓位越大。</p>
+
+  <div class="param-card">
+    <h4>冷却与恢复机制</h4>
+    <table>
+      <thead><tr><th>阶段</th><th>条件</th><th>行为</th></tr></thead>
+      <tbody>
+        <tr><td>正常交易</td><td>—</td><td>按公式计算仓位</td></tr>
+        <tr><td>触发冷却</td><td>连续 3 笔亏损</td><td>暂停交易 6 个周期</td></tr>
+        <tr><td>冷却恢复</td><td>冷却期结束</td><td>仓位系数 = 0.5（减半恢复）</td></tr>
+        <tr><td>恢复正常</td><td>连续 3 笔盈利</td><td>仓位系数恢复至 1.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">recovery_correct_streak 字段持久化存储恢复进度，服务重启不丢失。</p>
+
+  <h3>5.1 波动率仓位乘数（连续 sigmoid）</h3>
+  <p>基础仓位公式不变，额外乘以<strong>波动率仓位乘数</strong>（由 z-score 连续映射，无阈值跳变）：</p>
+  <div class="formula">
+    position_size = base_lot &times; |final_score| &times; risk_multiplier &times; vol_multiplier<br><br>
+    vol_multiplier = clamp( 1.20 &minus; 0.87 &middot; sigmoid(z), 0.25, 1.30 )<br>
+    s = sigmoid(z, center=0, steepness=1.5)<br>
+    扩张惩罚：expansion_rate &gt; 0.10 &rarr; 额外 &times;0.85（连续 sigmoid）
+  </div>
+  <table>
+    <thead><tr><th>z_score</th><th>&minus;2（平静）</th><th>0（正常）</th><th>+1（偏高）</th><th>+2（极端）</th></tr></thead>
+    <tbody>
+      <tr><td>vol_multiplier</td><td>1.20</td><td>1.00</td><td>&asymp;0.50</td><td>&asymp;0.33</td></tr>
+    </tbody>
+  </table>
+  <p class="note">波动越低，仓位可略放大（最多 1.20×）；波动越高，仓位连续收缩（极端 &asymp;0.33×，最低 0.25×）。波动率快速扩张时再叠加减仓，避免追高波动。</p>
+</div>
+
+<!-- ===== 6. EWMA 反馈优化 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">6</span>EWMA 在线学习</div>
+
+  <h3>6.1 盈亏映射 — Reward 函数</h3>
+  <div class="formula green">
+    risk_capital = entry_price &times; contract_multiplier &times; position_size<br>
+    reward = tanh(pnl / (risk_capital &times; risk_per_trade))
+  </div>
+  <p>使用 <code>tanh</code> 平滑映射替代二元胜负，避免单笔极端盈亏主导 EWMA 更新。<code>risk_per_trade</code> 使 reward 对盈亏百分比更敏感（2% 盈利 → tanh(1.0) ≈ 0.76），加速 EWMA 学习。</p>
+
+  <h3>6.2 EWMA 更新规则</h3>
+  <div class="formula">
+    ewma<sub>new</sub> = &beta; &times; ewma<sub>old</sub> + (1 &minus; &beta;) &times; reward<br>
+    &beta; = 0.9 &nbsp;（半衰期 &asymp; ln(0.5) / ln(0.9) &asymp; 6.5 周期）
+  </div>
+
+  <h3>6.3 技术/情绪 EWMA 独立更新</h3>
+  <p>技术侧和情绪侧的 EWMA 各自独立评估，不与综合交易结果混为一谈：</p>
+  <table>
+    <thead><tr><th>EWMA 流</th><th>判断依据</th><th>reward</th></tr></thead>
+    <tbody>
+      <tr><td><code>ewma_tech</code></td><td>sign(tech_score) 是否等于实际涨跌方向</td><td>方向一致 +1，方向相反 &minus;1</td></tr>
+      <tr><td><code>ewma_sent</code></td><td>sign(sentiment_score) 是否等于实际涨跌方向</td><td>方向一致 +1，方向相反 &minus;1</td></tr>
+      <tr><td><code>ewma_vol</code></td><td>sign(vol_score) 是否等于实际涨跌方向</td><td>方向一致 +1，方向相反 &minus;1（与 tech/sent 完全独立）</td></tr>
+    </tbody>
+  </table>
+  <p>这一解耦使 &alpha; = sigmoid(ewma_tech &minus; ewma_sent) 能真正滑向更可靠的一侧——技术总能预测对而情绪屡次错时，&alpha; 自然向 1 偏移；反之向 0 偏移。</p>
+
+  <h3>6.4 跳过更新的场景</h3>
+  <table>
+    <thead><tr><th>场景</th><th>指标 EWMA (rsi/macd/bb/mom)</th><th>技术/情绪 EWMA (tech/sent)</th></tr></thead>
+    <tbody>
+      <tr><td>未开仓周期（NEUTRAL / 冷却 / 数据过期）</td><td>正常更新（基于价格涨跌）</td><td>不更新（无交易结果）</td></tr>
+      <tr><td>情绪数据 &gt; 4 小时过期</td><td>正常更新</td><td>ewma_sent 冻结；&alpha; 强制 = 1</td></tr>
+      <tr><td>冷启动 warmup_count &lt; 20</td><td>不更新</td><td>不更新</td></tr>
+      <tr><td>换月 / 收盘平仓 / 止损触发</td><td>不更新（提前返回）</td><td>止损触发时按交易结果更新</td></tr>
+      <tr><td>数据新鲜度 &gt; 10 分钟</td><td>正常更新</td><td>不交易，不更新</td></tr>
+    </tbody>
+  </table>
+
+  <h3>6.5 指标 EWMA 动态更新</h3>
+  <p>每个周期（warmup 结束后）对比上一周期各指标信号方向 <code>sign(signal<sub>i</sub>)</code> 与实际价格涨跌方向：</p>
+  <ul style="font-size:13px; margin:8px 0 8px 20px; color:var(--text);">
+    <li style="margin:4px 0;">方向一致 &rarr; <code>ewma<sub>i</sub> = &beta; &times; ewma<sub>i</sub> + (1 &minus; &beta;) &times; (+1)</code></li>
+    <li style="margin:4px 0;">方向相反 &rarr; <code>ewma<sub>i</sub> = &beta; &times; ewma<sub>i</sub> + (1 &minus; &beta;) &times; (&minus;1)</code></li>
+  </ul>
+  <p>指标 EWMA 每周期更新，不依赖是否开仓——即使方向为 NEUTRAL 或处于冷却期，只要价格有涨跌就会更新。此机制使 softmax 权重自动向近期表现更好的指标滑移，劣化指标的权重自然衰减。仅在价格无变化（actual_dir = 0）或首周期（无 prev_price）时跳过。</p>
+
+  <h3>6.6 波动率 EWMA 与 reward 加权</h3>
+  <p><code>ewma_vol</code> 与技术 / 情绪 EWMA 完全独立更新，机制相同（方向一致 +1 / 相反 &minus;1），仅初始值不同（默认 0.5）。它专用于驱动 <strong>三路 softmax 融合</strong> 中波动率一路的权重滑移。</p>
+  <p>当开启 <code>volatility.adjust_reward</code> 时，PnL 类 reward 会按波动率难度加权（<strong>仅缩放 tanh 映射的 reward，不触碰方向 &plusmn;1 的 EWMA</strong>）：</p>
+  <div class="formula gold">
+    weight = clamp( 0.85 + 0.65 &middot; sigmoid(z, center=0, steepness=1.0), 0.80, 1.50 )<br>
+    reward<sub>adj</sub> = reward &times; weight
+  </div>
+  <table>
+    <thead><tr><th>z_score</th><th>&minus;1（低波动）</th><th>0（正常）</th><th>+1（偏高）</th><th>+2（极端）</th></tr></thead>
+    <tbody>
+      <tr><td>reward 权重</td><td>0.85（盈利较易，略折减）</td><td>1.00</td><td>1.30（盈利较难，放大）</td><td>1.50（最大放大）</td></tr>
+    </tbody>
+  </table>
+  <p class="note">方向 &plusmn;1 的 EWMA 学习机制是「神圣不可动」的；<code>adjust_reward</code> 只调整 PnL reward 的难度因子，不改变方向评估。当前生产配置 <code>adjust_reward = false</code>，尚未启用。</p>
+</div>
+
+<!-- ===== 7. 风险控制 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">7</span>风险控制</div>
+
+  <h3>7.1 数据层保护</h3>
+  <table>
+    <thead><tr><th>机制</th><th>参数</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>数据新鲜度</td><td>&gt; 10 分钟跳过</td><td>防止基于过期数据交易</td></tr>
+      <tr><td>情绪过期</td><td>&gt; 4 小时冻结</td><td>情绪得分为 0，纯技术驱动</td></tr>
+      <tr><td>K 线缓存</td><td>拉 100 根 / 存 200 根</td><td>防止重启冷启动无指标</td></tr>
+      <tr><td>换月检测</td><td>跳空 &gt; 3%</td><td>清空缓存保留 20 根；重置所有 EWMA</td></tr>
+      <tr><td>冷启动</td><td>前 20 周期</td><td>只积累数据不交易</td></tr>
+      <tr><td>未闭合K线过滤</td><td>丢弃最新一根</td><td>Sina 分钟K线在形成过程中实时更新 OHLCV，入库前丢弃当前分钟未闭合K线，下一轮 cron 时该K线已闭合补全</td></tr>
+      <tr><td>主力合约选择</td><td>持仓量最大</td><td>从交易所合约列表中筛选已上市且未到期的合约，取最近到期的 4 个候选，逐一查询日K线持仓量（open interest），选择持仓量最大的合约作为主力。结果缓存 1 小时。API 失败时回退到最近到期合约。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>7.2 数据源解耦</h3>
+  <p>Adapter 层将 AkShare 中文列名映射为标准 OHLCV，支持更换数据源时只改 adapter。同时负责主力合约解析（<code>resolve_contract_code</code>）。</p>
+  <div class="formula">
+    AkShare[&quot;日期&quot;,&quot;开盘&quot;,&quot;最高&quot;,&quot;最低&quot;,&quot;收盘&quot;,&quot;成交量&quot;] &rarr; [date, open, high, low, close, volume]
+  </div>
+  <p class="note"><strong>主力合约解析流程</strong>：SHFE/INE 合约信息接口获取合约列表 &rarr; 筛选已上市且未到期的合约 &rarr; 取最近到期的 4 个候选 &rarr; 逐一查询 <code>futures_zh_daily_sina</code> 日K线 &rarr; 比较持仓量（hold），选最大者 &rarr; 结果缓存 1 小时。非交易日查询自动往前回溯最多 3 天。</p>
+
+  <h3>7.3 三级止损机制</h3>
+  <p>每笔持仓在每轮信号计算前检查止损条件，优先级从高到低：</p>
+  <table>
+    <thead><tr><th>层级</th><th>触发条件</th><th>行为</th></tr></thead>
+    <tbody>
+      <tr><td><strong>硬止损</strong> HARD_STOP</td><td>浮亏 &ge; <code>hard_stop_loss</code>（全部品种 6%）</td><td>立即市价平仓，不等待信号方向</td></tr>
+      <tr><td><strong>保本止损</strong> BREAKEVEN</td><td>浮盈曾达到 <code>breakeven_trigger</code> 后回落至入场价</td><td>以入场价平仓，锁定零亏损</td></tr>
+      <tr><td><strong>移动止损</strong> TRAILING</td><td>从持仓期间峰值回撤 &ge; <code>trailing_stop_pct</code>（AU/AG/IC/IM 2%, SC 3%）</td><td>市价平仓，保护已有利润</td></tr>
+    </tbody>
+  </table>
+  <p>硬止损无条件执行；保本和移动止损仅在浮盈突破触发阈值后才激活。<code>peak_price</code> 追踪持仓期间最佳价格，每次信号计算前更新。</p>
+
+  <div class="formula green">
+    LONG: loss_pct = (entry &minus; price) / entry<br>
+    SHORT: loss_pct = (price &minus; entry) / entry<br>
+    止盈则用 profit_pct 对称计算。
+  </div>
+
+  <h3>7.4 手续费与滑点</h3>
+  <p>模拟成交自动扣除双边手续费并施加不利方向滑点：</p>
+  <table>
+    <thead><tr><th>品种</th><th>手续费模式</th><th>费率</th><th>滑点率</th></tr></thead>
+    <tbody>
+      <tr><td>AU</td><td>固定</td><td>10 元/手</td><td>0.02%</td></tr>
+      <tr><td>AG</td><td>比例</td><td>合约值 &times; 0.005%</td><td>0.03%</td></tr>
+      <tr><td>SC</td><td>固定</td><td>20 元/手</td><td>0.04%</td></tr>
+      <tr><td>IC</td><td>比例</td><td>万分之 0.23</td><td>0.02%</td></tr>
+      <tr><td>IM</td><td>比例</td><td>万分之 0.23</td><td>0.02%</td></tr>
+    </tbody>
+  </table>
+  <p>滑点方向始终对交易者不利：做多时成交价上浮、做空时下浮。<code>vol_penalty</code> 由波动率 z-score 连续映射（替代原离散的「ATR/价格 &gt; 2%」判定），高波动时滑点放大、低波动时收窄，与信号层共享同一波动率评估。</p>
+
+  <div class="formula">
+    LONG: fill_price = price &times; (1 + slippage_rate &times; vol_penalty)<br>
+    SHORT: fill_price = price &times; (1 &minus; slippage_rate &times; vol_penalty)
+  </div>
+
+  <h3>7.5 保证金占用</h3>
+  <p>保证金 = 合约面值 &times; 保证金率。用于资金管理估算，不参与策略决策。</p>
+  <table>
+    <thead><tr><th>品种</th><th>合约乘数</th><th>保证金率</th><th>每手保证金（约）</th></tr></thead>
+    <tbody>
+      <tr><td>AU</td><td>1000 克/手</td><td>10%</td><td>价格 &times; 100</td></tr>
+      <tr><td>AG</td><td>15 千克/手</td><td>12%</td><td>价格 &times; 1.8</td></tr>
+      <tr><td>SC</td><td>1000 桶/手</td><td>15%</td><td>价格 &times; 150</td></tr>
+      <tr><td>IC</td><td>200 点/手</td><td>12%</td><td>价格 &times; 24</td></tr>
+      <tr><td>IM</td><td>200 点/手</td><td>12%</td><td>价格 &times; 24</td></tr>
+    </tbody>
+  </table>
+
+  <h3>7.6 期末强制平仓</h3>
+  <p>每交易时段最后一分钟自动触发强制平仓，防止隔夜跳空风险。判断逻辑：下一分钟不在任何交易时段内时触发（<strong>10:15、11:30、15:00、02:30</strong>）。夜盘 21:00&ndash;23:59 与 00:00&ndash;02:30 为连续交易时段，23:59 不触发平仓。</p>
+  <div class="formula gold">
+    is_session_end_cycle(now) = is_trading_time(now) &and; &not; is_trading_time(now + 1min)
+  </div>
+  <p>触发时调用 <code>trader.force_close()</code> 对所有持仓标的强制平仓，记录 PnL 和 signal_snapshot 后本周期提前返回，不再执行信号计算和开仓逻辑。</p>
+
+  <h3>7.7 波动率连续风控（统一惩罚）</h3>
+  <p>波动率风控层将所有惩罚统一为 <strong>z_score 的连续 sigmoid 映射</strong>，完全消除阈值跳变（cliff-effect）。仓位、滑点、止损三路共享同一 z_score &rarr; 连续映射，保证信号层与执行层始终同步：</p>
+  <div class="formula">
+    s = sigmoid(z, center=0, steepness=1.5)<br>
+    vol_multiplier&nbsp; = clamp(1.20 &minus; 0.87 &middot; s, 0.25, 1.30)<br>
+    slippage_factor = clamp(0.80 + 1.20 &middot; s, 0.70, 2.50)<br>
+    stop_multiple&nbsp;&nbsp; = clamp(1.50 + 1.50 &middot; s, 1.0, 4.0)
+  </div>
+  <table>
+    <thead><tr><th>z_score</th><th>&minus;2</th><th>0</th><th>+1</th><th>+2</th></tr></thead>
+    <tbody>
+      <tr><td>vol_multiplier</td><td>1.20</td><td>1.00</td><td>0.50</td><td>0.33</td></tr>
+      <tr><td>slippage_factor</td><td>0.80</td><td>1.00</td><td>1.50</td><td>2.00</td></tr>
+      <tr><td>stop_multiple（ATR 倍数）</td><td>1.5</td><td>2.0</td><td>2.5</td><td>3.0</td></tr>
+    </tbody>
+  </table>
+  <p>动态止损以 ATR &times; z-score 自适应倍数计算（<code>volatility.dynamic_stop</code> 开启时替换原固定百分比止损），并受硬止损上限与 0.5×ATR 下限约束：</p>
+  <div class="formula green">
+    atr_multiple = 1.50 + 1.50 &middot; s<br>
+    stop_distance = clamp( ATR &times; atr_multiple, 0.5 &times; ATR, entry &times; hard_stop_pct )<br>
+    z &gt; 2.5 &rarr; pause_new_entry（极端波动暂停新开仓）
+  </div>
+  <p class="note">当前生产配置中 <strong>AU 已开启</strong> <code>dynamic_stop</code> 与 <code>adjust_reward</code>（P2 止损 / P3 三路融合已灰度生效）；其余品种仍为 <code>false</code>，波动率模块处于<strong>影子 / 静默模式</strong>：市场平静时 <code>vol_score &asymp; 0</code>，系统行为与旧版完全一致。此为方案 B' 的渐进式上线策略（P1 影子 &rarr; P2 止损 &rarr; P3 三路融合 &rarr; P4 全量）。</p>
+</div>
+
+<!-- ===== 8. 数据库设计 ===== -->
+<div class="section">
+  <div class="section-title"><span class="section-num">8</span>数据库 &amp; 文件结构</div>
+
+  <table>
+    <thead><tr><th>文件</th><th>职责</th></tr></thead>
+    <tbody>
+      <tr><td><code>config.yaml</code></td><td>五品种独立参数配置（指标周期 / EWMA &beta; / 风险比例）</td></tr>
+      <tr><td><code>db/models.py</code></td><td>SQLite 表定义 + CRUD（WAL 模式，线程安全）</td></tr>
+      <tr><td><code>data/fetcher.py</code></td><td>AkShare 拉取 + 新鲜度检查</td></tr>
+      <tr><td><code>data/adapter.py</code></td><td>中文列名 &rarr; OHLCV 映射；主力合约解析</td></tr>
+      <tr><td><code>signal/indicators.py</code></td><td>RSI(ADX调制) / MACD / BB / MOM / ADX 指标计算</td></tr>
+      <tr><td><code>signal/scorer.py</code></td><td>&alpha; 融合 + softmax 权重 + 方向判定</td></tr>
+      <tr><td><code>executor/position.py</code></td><td>仓位计算 + 冷却逻辑 + 信号阈值</td></tr>
+      <tr><td><code>feedback/ewma_tracker.py</code></td><td>EWMA 追踪 &mdash; 四指标 + 技术/情绪独立更新</td></tr>
+      <tr><td><code>feedback/optimizer.py</code></td><td>冷却期控制 + reward 计算 + 仓位乘数</td></tr>
+      <tr><td><code>executor/trader.py</code></td><td>模拟交易执行（滑点、手续费、三级止损）</td></tr>
+      <tr><td><code>main.py</code></td><td>主控循环，每分钟整点运行</td></tr>
+      <tr><td><code>volatility/estimators.py</code></td><td>Yang-Zhang 估计器 + ATR 工具量（波动率估计）</td></tr>
+      <tr><td><code>volatility/avi.py</code></td><td>波动率状态计算（YZ + z-score + 扩展速率 + 状态分类）</td></tr>
+      <tr><td><code>volatility/signal.py</code></td><td>波动率方向信号（扩张跟随 / 极端反转，连续 sigmoid）</td></tr>
+      <tr><td><code>volatility/integration.py</code></td><td>连续 sigmoid 风控（仓位 / 滑点 / 止损 / reward 加权）</td></tr>
+      <tr><td><code>volatility/__init__.py</code></td><td>对外公共 API 导出</td></tr>
+    </tbody>
+  </table>
+
+  <h3>数据库表</h3>
+  <table>
+    <thead><tr><th>表名</th><th>用途</th><th>核心字段</th></tr></thead>
+    <tbody>
+      <tr><td><code>trades</code></td><td>交易记录</td><td>cycle_time, symbol, direction, entry_price, exit_price, position_size, pnl, pnl_pct, open_time, close_time</td></tr>
+      <tr><td><code>signal_snapshots</code></td><td>每周期信号快照</td><td>price, tech_score, sentiment_score, alpha, final_score, direction, position_size, vol_yz, vol_zscore, vol_state, vol_multiplier, vol_score</td></tr>
+      <tr><td><code>ewma_state</code></td><td>EWMA 持久化</td><td>ewma_rsi/macd/bb/mom, ewma_tech, ewma_sent, ewma_sent_frozen, ewma_vol, alpha, error_count, cool_remaining, recovery_correct_streak, warmup_count, pos_direction, pos_entry, pos_size, pos_open_time, prev_rsi_signal, prev_macd_signal, prev_bb_signal, prev_mom_signal, prev_price</td></tr>
+      <tr><td><code>kline_cache</code></td><td>K 线缓存</td><td>symbol, date, open, high, low, close, volume</td></tr>
+    </tbody>
+  </table>
+
+  <h4>ewma_state 额外字段说明</h4>
+  <table>
+    <thead><tr><th>字段</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>pos_direction</code> / <code>pos_entry</code> / <code>pos_size</code> / <code>pos_open_time</code></td><td>持仓状态持久化 — 持仓以 trades 表为权威账本，启动时对账恢复并同步 ewma_state，避免状态丢失</td></tr>
+      <tr><td><code>prev_rsi_signal</code> / <code>prev_macd_signal</code> / <code>prev_bb_signal</code> / <code>prev_mom_signal</code> / <code>prev_price</code></td><td>上一周期各指标信号与价格 — 供本周期指标 EWMA 反馈计算（对比信号方向与实际涨跌）</td></tr>
+      <tr><td><code>ewma_vol</code></td><td>波动率信号 EWMA 持久化 — 驱动三路 softmax 融合中波动率一路的权重滑移，与技术/情绪 EWMA 独立更新</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+</div>
+</body>
+</html>

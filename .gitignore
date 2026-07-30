@@ -1,0 +1,26 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- 项目运行时产物（含敏感/私有数据，禁止入库）----
+config.yaml                 # 真实配置（含密钥），请用 config.example.yaml 生成
+*.db
+*.db-wal
+*.db-shm
+*.log
+.wecom_token_cache.json
+contract_cache.json
+*.bak*
+*.tgz
+
+# ---- 环境/密钥 ----
+.env
+.env.*
+
+# ---- 系统 ----
+.DS_Store
+.idea/
+.vscode/

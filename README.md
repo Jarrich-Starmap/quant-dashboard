@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+![Dashboard 示例](https://jarrich-starmap.github.io/quant-dashboard/example.png)
+
 一套面向商品期货（沪金 AU / 沪银 AG / 原油 SC）与股指期货（中证 500 IC / 中证 1000 IM）的**四层流水线自适应量化交易系统**。核心特征：
 
 - **四层流水线**：`Data → Signal → Execution → Feedback`，各层解耦、可独立演进。
@@ -61,7 +63,7 @@ quant-dashboard/
 
 ## 系统架构
 
-[![系统架构](docs/architecture.svg)](https://jarrich-starmap.github.io/quant-dashboard/quant-trader.html)
+[![系统架构](https://jarrich-starmap.github.io/quant-dashboard/architecture.svg)](https://jarrich-starmap.github.io/quant-dashboard/quant-trader.html)
 
 > 点击图片查看完整设计文档（架构图、参数表与计算公式）。
 

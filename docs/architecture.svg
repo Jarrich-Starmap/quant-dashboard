@@ -1,0 +1,119 @@
+<svg viewBox="0 0 900 575" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#2980b9"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#27ae60"/></marker>
+    <marker id="as" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#7f8c8d"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#e74c3c"/></marker>
+    <marker id="agold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#d4a017"/></marker>
+  </defs>
+  <rect width="900" height="575" fill="#f8f9fa" rx="8"/>
+
+  <!-- External Data Sources -->
+  <text x="350" y="18" text-anchor="middle" font-size="11" fill="#7f8c8d" font-weight="600" letter-spacing="2">EXTERNAL DATA</text>
+  <rect x="100" y="28" width="250" height="42" rx="6" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="225" y="46" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">AkShare &middot; Sina 分钟K线</text>
+  <text x="225" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">AU 沪金 / AG 沪银 / SC 原油</text>
+  <rect x="400" y="28" width="250" height="42" rx="6" fill="#e8f8ed" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="525" y="46" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">Sentiment JSON</text>
+  <text x="525" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">多空情绪 &middot; &gt;2h 过期冻结</text>
+  <line x1="225" y1="70" x2="225" y2="90" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+  <line x1="525" y1="70" x2="525" y2="90" stroke="#27ae60" stroke-width="1.5" marker-end="url(#ag)"/>
+
+  <!-- Data Layer -->
+  <rect x="40" y="90" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+  <path d="M48 90 L652 90 Q660 90 660 98 L660 106 L40 106 L40 98 Q40 90 48 90 Z" fill="#2980b9"/>
+  <text x="55" y="102" font-size="10" fill="#fff" font-weight="600">DATA LAYER</text>
+  <rect x="60" y="116" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="195" y="133" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">fetcher.py</text>
+  <text x="195" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">新鲜度检查 &middot; K线缓存 &middot; 换月检测</text>
+  <rect x="370" y="116" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="505" y="133" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">adapter.py</text>
+  <text x="505" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">中文列名&rarr;OHLCV &middot; 主力合约解析</text>
+  <line x1="330" y1="137" x2="370" y2="137" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+  <line x1="350" y1="166" x2="350" y2="188" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+
+  <!-- Signal Layer -->
+  <rect x="40" y="188" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+  <path d="M48 188 L652 188 Q660 188 660 196 L660 204 L40 204 L40 196 Q40 188 48 188 Z" fill="#2980b9"/>
+  <text x="55" y="200" font-size="10" fill="#fff" font-weight="600">SIGNAL LAYER</text>
+  <rect x="60" y="214" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="195" y="231" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">indicators.py</text>
+  <text x="195" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">RSI(ADX调制) &middot; MACD &middot; BB &middot; MOM</text>
+  <rect x="370" y="214" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="505" y="231" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">scorer.py</text>
+  <text x="505" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">softmax加权 &middot; &alpha;融合 &middot; 方向判定</text>
+  <line x1="330" y1="235" x2="370" y2="235" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+  <line x1="350" y1="264" x2="350" y2="286" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+
+  <!-- Execution Layer -->
+  <rect x="40" y="286" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+  <path d="M48 286 L652 286 Q660 286 660 294 L660 302 L40 302 L40 294 Q40 286 48 286 Z" fill="#2980b9"/>
+  <text x="55" y="298" font-size="10" fill="#fff" font-weight="600">EXECUTION LAYER</text>
+  <rect x="60" y="312" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="195" y="329" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">position.py</text>
+  <text x="195" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">仓位计算 &middot; 冷却控制 &middot; 信号阈值</text>
+  <rect x="370" y="312" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="505" y="329" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">trader.py</text>
+  <text x="505" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">模拟交易 &middot; 滑点 &middot; 三级止损</text>
+  <line x1="330" y1="333" x2="370" y2="333" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+  <line x1="350" y1="362" x2="350" y2="384" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+
+  <!-- Feedback Layer -->
+  <rect x="40" y="384" width="620" height="76" rx="8" fill="#fff" stroke="#e8ecf1" stroke-width="1.5"/>
+  <path d="M48 384 L652 384 Q660 384 660 392 L660 400 L40 400 L40 392 Q40 384 48 384 Z" fill="#27ae60"/>
+  <text x="55" y="396" font-size="10" fill="#fff" font-weight="600">FEEDBACK LAYER</text>
+  <rect x="60" y="410" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="195" y="427" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">ewma_tracker.py</text>
+  <text x="195" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">EWMA追踪 &middot; 指标/技术/情绪/波动率独立</text>
+  <rect x="370" y="410" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="505" y="427" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">optimizer.py</text>
+  <text x="505" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">冷却管理 &middot; reward &middot; 仓位乘数</text>
+  <line x1="330" y1="431" x2="370" y2="431" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
+
+  <!-- SQLite Database -->
+  <rect x="690" y="90" width="170" height="370" rx="8" fill="#fff" stroke="#d4a017" stroke-width="1.5"/>
+  <path d="M698 90 L852 90 Q860 90 860 98 L860 110 L690 110 L690 98 Q690 90 698 90 Z" fill="#d4a017"/>
+  <text x="775" y="105" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">SQLite WAL</text>
+  <text x="775" y="130" text-anchor="middle" font-size="9" fill="#7f8c8d" font-weight="600">TABLES</text>
+  <rect x="710" y="138" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+  <text x="775" y="153" text-anchor="middle" font-size="10" fill="#8a7a30">trades</text>
+  <rect x="710" y="166" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+  <text x="775" y="181" text-anchor="middle" font-size="10" fill="#8a7a30">signal_snapshots</text>
+  <rect x="710" y="194" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+  <text x="775" y="209" text-anchor="middle" font-size="10" fill="#8a7a30">ewma_state</text>
+  <rect x="710" y="222" width="130" height="22" rx="4" fill="#fdf6e3" stroke="#e8d8a0"/>
+  <text x="775" y="237" text-anchor="middle" font-size="10" fill="#8a7a30">kline_cache</text>
+  <text x="775" y="268" text-anchor="middle" font-size="9" fill="#7f8c8d">线程安全</text>
+  <text x="775" y="282" text-anchor="middle" font-size="9" fill="#7f8c8d">持久化存储</text>
+  <text x="775" y="296" text-anchor="middle" font-size="9" fill="#7f8c8d">WAL 模式</text>
+
+  <!-- DB connections (dashed) -->
+  <line x1="660" y1="137" x2="690" y2="149" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="660" y1="235" x2="690" y2="205" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="660" y1="333" x2="690" y2="333" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="660" y1="431" x2="690" y2="378" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Feedback Loop -->
+  <path d="M 350 460 Q 350 505 200 505 Q 18 505 18 300 Q 18 226 40 226" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ar)"/>
+  <rect x="95" y="494" width="250" height="22" rx="4" fill="#fdeaea" stroke="#e74c3c" stroke-width="1"/>
+  <text x="220" y="509" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="600">反馈环路：&alpha; · softmax · 波动率 权重在线更新</text>
+  <rect x="400" y="494" width="180" height="22" rx="4" fill="#f4f5f7" stroke="#e8ecf1"/>
+  <text x="490" y="509" text-anchor="middle" font-size="10" fill="#7f8c8d">config.yaml &middot; 五品种独立参数</text>
+  <rect x="600" y="494" width="110" height="22" rx="4" fill="#e8f4fd" stroke="#2980b9" stroke-width="1"/>
+  <text x="655" y="509" text-anchor="middle" font-size="10" fill="#2980b9" font-weight="600">main.py 主控</text>
+
+  <!-- Legend -->
+  <rect x="40" y="532" width="820" height="30" rx="6" fill="#fff" stroke="#e8ecf1"/>
+  <line x1="60" y1="547" x2="90" y2="547" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
+  <text x="98" y="551" font-size="10" fill="#7f8c8d">数据流</text>
+  <line x1="160" y1="547" x2="190" y2="547" stroke="#d4a017" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="198" y="551" font-size="10" fill="#7f8c8d">DB 读写</text>
+  <line x1="260" y1="547" x2="290" y2="547" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ar)"/>
+  <text x="298" y="551" font-size="10" fill="#7f8c8d">反馈环路（下一周期生效）</text>
+  <rect x="490" y="542" width="12" height="10" rx="2" fill="#2980b9"/>
+  <text x="510" y="551" font-size="10" fill="#7f8c8d">数据/信号/执行层</text>
+  <rect x="620" y="542" width="12" height="10" rx="2" fill="#27ae60"/>
+  <text x="640" y="551" font-size="10" fill="#7f8c8d">反馈层</text>
+  <rect x="700" y="542" width="12" height="10" rx="2" fill="#d4a017"/>
+  <text x="720" y="551" font-size="10" fill="#7f8c8d">SQLite</text>
+</svg>

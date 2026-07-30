@@ -6,7 +6,7 @@
 
 - **四层流水线**：`Data → Signal → Execution → Feedback`，各层解耦、可独立演进。
 - **三路信号融合**：技术面（RSI/MACD/BB/Momentum）+ 情绪面 + 波动率面，经 **softmax(EWMA) 动态权重** 融合，EWMA 在线学习各路信号的历史胜率。
-- **波动率模块（方案 B'）**：单一 Yang-Zhang 估计器 + EWMA z-score 状态判定 + 连续 sigmoid 风险控制；仅启用 **Expansion-follow（扩张跟随）** 与 **Extreme-reversal（极端反转）** 两类模式，全部 config-gated。
+- **波动率模块**：单一 Yang-Zhang 估计器 + EWMA z-score 状态判定 + 连续 sigmoid 风险控制；仅启用 **Expansion-follow（扩张跟随）** 与 **Extreme-reversal（极端反转）** 两类模式，全部 config-gated。
 - **持仓台账自愈**：以 `trades` 表为权威账本，每次运行先对账（reconcile），自动清理孤儿持仓，保证与冗余台账 `ewma_state` 一致。
 - **可视化 Dashboard**：FastAPI 后端 + Chart.js 前端，展示信号得分时序、持仓、累计盈亏等。
 
@@ -59,6 +59,14 @@ quant-dashboard/
 
 ---
 
+## 系统架构
+
+[![系统架构](docs/architecture.svg)](https://jarrich-starmap.github.io/quant-dashboard/quant-trader.html)
+
+> 点击图片查看完整设计文档（架构图、参数表与计算公式）。
+
+---
+
 ## 快速开始
 
 ### 1. 环境
@@ -80,8 +88,6 @@ pip install -r requirements.txt
 cp config.example.yaml config.yaml
 # 编辑 config.yaml：品种参数、手续费、情绪数据路径等
 ```
-
-**敏感字段请用环境变量注入，勿写明文**：
 
 | 环境变量 | 对应配置项 | 说明 |
 |---|---|---|
@@ -157,11 +163,9 @@ EWMA 对各路信号权重做在线学习（方向 ±1、PnL 用 tanh 映射为 
 ## 开发状态
 
 - [x] 四层流水线、三路融合、EWMA 自适应
-- [x] 波动率模块（方案 B'）+ 连续 sigmoid 风控
+- [x] 波动率模块 + 连续 sigmoid 风控
 - [x] 持仓台账对账自愈
 - [x] Dashboard 可视化
-- [ ] 配置收敛重构（`global` + `symbol` 两段、纯内部常数隐藏）
-- [ ] vol_score 归一化扩至 ±1（方案 B）
 
 ---
 

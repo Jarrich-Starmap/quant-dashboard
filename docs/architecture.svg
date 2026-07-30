@@ -11,11 +11,11 @@
   <!-- External Data Sources -->
   <text x="350" y="18" text-anchor="middle" font-size="11" fill="#7f8c8d" font-weight="600" letter-spacing="2">EXTERNAL DATA</text>
   <rect x="100" y="28" width="250" height="42" rx="6" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5"/>
-  <text x="225" y="46" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">AkShare &middot; Sina 分钟K线</text>
+  <text x="225" y="46" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">AkShare · Sina 分钟K线</text>
   <text x="225" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">AU 沪金 / AG 沪银 / SC 原油</text>
   <rect x="400" y="28" width="250" height="42" rx="6" fill="#e8f8ed" stroke="#27ae60" stroke-width="1.5"/>
   <text x="525" y="46" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">Sentiment JSON</text>
-  <text x="525" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">多空情绪 &middot; &gt;2h 过期冻结</text>
+  <text x="525" y="61" text-anchor="middle" font-size="10" fill="#7f8c8d">多空情绪 · &gt;2h 过期冻结</text>
   <line x1="225" y1="70" x2="225" y2="90" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
   <line x1="525" y1="70" x2="525" y2="90" stroke="#27ae60" stroke-width="1.5" marker-end="url(#ag)"/>
 
@@ -25,10 +25,10 @@
   <text x="55" y="102" font-size="10" fill="#fff" font-weight="600">DATA LAYER</text>
   <rect x="60" y="116" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="195" y="133" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">fetcher.py</text>
-  <text x="195" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">新鲜度检查 &middot; K线缓存 &middot; 换月检测</text>
+  <text x="195" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">新鲜度检查 · K线缓存 · 换月检测</text>
   <rect x="370" y="116" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="505" y="133" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">adapter.py</text>
-  <text x="505" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">中文列名&rarr;OHLCV &middot; 主力合约解析</text>
+  <text x="505" y="148" text-anchor="middle" font-size="10" fill="#7f8c8d">中文列名→OHLCV · 主力合约解析</text>
   <line x1="330" y1="137" x2="370" y2="137" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
   <line x1="350" y1="166" x2="350" y2="188" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
 
@@ -38,10 +38,10 @@
   <text x="55" y="200" font-size="10" fill="#fff" font-weight="600">SIGNAL LAYER</text>
   <rect x="60" y="214" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="195" y="231" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">indicators.py</text>
-  <text x="195" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">RSI(ADX调制) &middot; MACD &middot; BB &middot; MOM</text>
+  <text x="195" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">RSI(ADX调制) · MACD · BB · MOM</text>
   <rect x="370" y="214" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="505" y="231" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">scorer.py</text>
-  <text x="505" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">softmax加权 &middot; &alpha;融合 &middot; 方向判定</text>
+  <text x="505" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">softmax加权 · α融合 · 方向判定</text>
   <line x1="330" y1="235" x2="370" y2="235" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
   <line x1="350" y1="264" x2="350" y2="286" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
 
@@ -51,10 +51,10 @@
   <text x="55" y="298" font-size="10" fill="#fff" font-weight="600">EXECUTION LAYER</text>
   <rect x="60" y="312" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="195" y="329" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">position.py</text>
-  <text x="195" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">仓位计算 &middot; 冷却控制 &middot; 信号阈值</text>
+  <text x="195" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">仓位计算 · 冷却控制 · 信号阈值</text>
   <rect x="370" y="312" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="505" y="329" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">trader.py</text>
-  <text x="505" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">模拟交易 &middot; 滑点 &middot; 三级止损</text>
+  <text x="505" y="344" text-anchor="middle" font-size="10" fill="#7f8c8d">模拟交易 · 滑点 · 三级止损</text>
   <line x1="330" y1="333" x2="370" y2="333" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
   <line x1="350" y1="362" x2="350" y2="384" stroke="#2980b9" stroke-width="1.5" marker-end="url(#ab)"/>
 
@@ -64,10 +64,10 @@
   <text x="55" y="396" font-size="10" fill="#fff" font-weight="600">FEEDBACK LAYER</text>
   <rect x="60" y="410" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="195" y="427" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">ewma_tracker.py</text>
-  <text x="195" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">EWMA追踪 &middot; 指标/技术/情绪/波动率独立</text>
+  <text x="195" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">EWMA追踪 · 指标/技术/情绪/波动率独立</text>
   <rect x="370" y="410" width="270" height="42" rx="5" fill="#f4f5f7" stroke="#e8ecf1"/>
   <text x="505" y="427" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="600">optimizer.py</text>
-  <text x="505" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">冷却管理 &middot; reward &middot; 仓位乘数</text>
+  <text x="505" y="442" text-anchor="middle" font-size="10" fill="#7f8c8d">冷却管理 · reward · 仓位乘数</text>
   <line x1="330" y1="431" x2="370" y2="431" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#as)"/>
 
   <!-- SQLite Database -->
@@ -96,9 +96,9 @@
   <!-- Feedback Loop -->
   <path d="M 350 460 Q 350 505 200 505 Q 18 505 18 300 Q 18 226 40 226" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ar)"/>
   <rect x="95" y="494" width="250" height="22" rx="4" fill="#fdeaea" stroke="#e74c3c" stroke-width="1"/>
-  <text x="220" y="509" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="600">反馈环路：&alpha; · softmax · 波动率 权重在线更新</text>
+  <text x="220" y="509" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="600">反馈环路：α · softmax · 波动率 权重在线更新</text>
   <rect x="400" y="494" width="180" height="22" rx="4" fill="#f4f5f7" stroke="#e8ecf1"/>
-  <text x="490" y="509" text-anchor="middle" font-size="10" fill="#7f8c8d">config.yaml &middot; 五品种独立参数</text>
+  <text x="490" y="509" text-anchor="middle" font-size="10" fill="#7f8c8d">config.yaml · 五品种独立参数</text>
   <rect x="600" y="494" width="110" height="22" rx="4" fill="#e8f4fd" stroke="#2980b9" stroke-width="1"/>
   <text x="655" y="509" text-anchor="middle" font-size="10" fill="#2980b9" font-weight="600">main.py 主控</text>
 
